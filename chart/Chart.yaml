@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: 0.0.1
+description: Scheduler Helm chart
+name: scheduler
+version: 0.0.1
+
