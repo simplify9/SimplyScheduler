@@ -1,0 +1,9 @@
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/bin/Debug/netstandard2.1/SW.PmmScheduler.Sdk.deps.json
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/bin/Debug/netstandard2.1/SW.PmmScheduler.Sdk.dll
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/bin/Debug/netstandard2.1/SW.PmmScheduler.Sdk.pdb
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/obj/Debug/netstandard2.1/SW.PmmScheduler.Sdk.csprojAssemblyReference.cache
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/obj/Debug/netstandard2.1/SW.PmmScheduler.Sdk.AssemblyInfoInputs.cache
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/obj/Debug/netstandard2.1/SW.PmmScheduler.Sdk.AssemblyInfo.cs
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/obj/Debug/netstandard2.1/SW.PmmScheduler.Sdk.csproj.CoreCompileInputs.cache
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/obj/Debug/netstandard2.1/SW.PmmScheduler.Sdk.dll
+/Users/muhannadalkhatib/Work/PMMScheduler/SW.PmmScheduler.Sdk/obj/Debug/netstandard2.1/SW.PmmScheduler.Sdk.pdb

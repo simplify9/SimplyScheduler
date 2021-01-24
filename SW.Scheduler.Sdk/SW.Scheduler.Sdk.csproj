@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Authors>SimplyWorks</Authors>
+        <Company>SimplyWorks</Company>
+        <Product>SimplyWorks.Pmm.Scheduler</Product>
+        <PackageId>SimplyWorks.Pmm.Scheduler.Model</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SimplyWorks.HttpExtensions" Version="2.0.44" />
+      <PackageReference Include="SimplyWorks.PrimitiveTypes" Version="2.0.106" />
+    </ItemGroup>
+
+</Project>
