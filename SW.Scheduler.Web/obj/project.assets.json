@@ -1232,7 +1232,7 @@
           }
         }
       },
-      "SimplyWorks.Pmm.Scheduler.Model/1.0.0": {
+      "SimplyWorks.Scheduler/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.1",
         "dependencies": {
@@ -1240,10 +1240,10 @@
           "SimplyWorks.PrimitiveTypes": "2.0.106"
         },
         "compile": {
-          "bin/placeholder/SimplyWorks.Pmm.Scheduler.Model.dll": {}
+          "bin/placeholder/SimplyWorks.Scheduler.dll": {}
         },
         "runtime": {
-          "bin/placeholder/SimplyWorks.Pmm.Scheduler.Model.dll": {}
+          "bin/placeholder/SimplyWorks.Scheduler.dll": {}
         }
       }
     }
@@ -4154,7 +4154,7 @@
         "version.txt"
       ]
     },
-    "SimplyWorks.Pmm.Scheduler.Model/1.0.0": {
+    "SimplyWorks.Scheduler/1.0.0": {
       "type": "project",
       "path": "../SW.Scheduler.Sdk/SW.Scheduler.Sdk.csproj",
       "msbuildProject": "../SW.Scheduler.Sdk/SW.Scheduler.Sdk.csproj"
@@ -4169,7 +4169,7 @@
       "Quartz.Serialization.Json >= 3.2.4",
       "SimplyWorks.Bus >= 3.0.15",
       "SimplyWorks.Logger >= 2.0.2",
-      "SimplyWorks.Pmm.Scheduler.Model >= 1.0.0"
+      "SimplyWorks.Scheduler >= 1.0.0"
     ]
   },
   "packageFolders": {

@@ -1001,7 +1001,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "/Users/muhannadalkhatib/Work/SimplyScheduler/SW.Scheduler/SW.Scheduler.Sdk/SW.Scheduler.Sdk.csproj",
-      "projectName": "SimplyWorks.Pmm.Scheduler.Model",
+      "projectName": "SimplyWorks.Scheduler",
       "projectPath": "/Users/muhannadalkhatib/Work/SimplyScheduler/SW.Scheduler/SW.Scheduler.Sdk/SW.Scheduler.Sdk.csproj",
       "packagesPath": "/Users/muhannadalkhatib/.nuget/packages/",
       "outputPath": "/Users/muhannadalkhatib/Work/SimplyScheduler/SW.Scheduler/SW.Scheduler.Sdk/obj/",
