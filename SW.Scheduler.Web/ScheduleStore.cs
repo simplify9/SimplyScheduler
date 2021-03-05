@@ -9,11 +9,10 @@ namespace SW.Scheduler.Web
 {
     public class ScheduleStore : IConsume<ScheduleMessage>
     {
-        
-
-        public ScheduleStore()
+        readonly ISchedulerFactory factory;
+        public ScheduleStore(ISchedulerFactory factory)
         {
-            
+            this.factory = factory;
         }
 
         public Task Process(ScheduleMessage message) =>
@@ -41,7 +40,7 @@ namespace SW.Scheduler.Web
                 .ForJob(request.Id, request.MessageTypeName)
                 .Build();
 
-            var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            var scheduler = await factory.GetScheduler();
             await scheduler.ScheduleJob(job, trigger);
 
         }
@@ -49,7 +48,7 @@ namespace SW.Scheduler.Web
         
         private async Task Update(ScheduleMessage request)
         {
-            var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            var scheduler = await factory.GetScheduler();
             
             var oldJob = await scheduler.GetJobDetail(new JobKey(request.Id, request.MessageTypeName));
             if (oldJob == null)
@@ -86,7 +85,7 @@ namespace SW.Scheduler.Web
 
         private async Task Delete(ScheduleMessage message)
         {
-            var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            var scheduler = await factory.GetScheduler();
             
             var oldJob = await scheduler.GetJobDetail(new JobKey(message.Id, message.MessageTypeName));
             if (oldJob == null) 

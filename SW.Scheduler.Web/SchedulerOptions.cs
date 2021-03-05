@@ -11,5 +11,12 @@ namespace SW.Scheduler.Web
 
         public string DatabaseType { get; set; } = DatabaseTypePgSql;
         public int MaxConcurrency { get; set; } = 10;
+        public string Path { get; set; } = "";
+
+        public string CustomCssUrl { get; set; }
+
+        public bool LazyInit { get; set; }
+
+        public int TimelineSpanInMinutes { get; set; } = 60;
     }
 }
