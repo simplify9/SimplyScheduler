@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using CrystalQuartz.Application;
 using CrystalQuartz.AspNetCore;
+using CrystalQuartz.Core.SchedulerProviders;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,13 +26,15 @@ namespace SW.Scheduler.Web
 {
     public class Startup
     {
+
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
-
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -48,35 +51,19 @@ namespace SW.Scheduler.Web
             Configuration.GetSection(SchedulerOptions.ConfigurationSection).Bind(schedulerOptions);
             services.AddSingleton(schedulerOptions);
 
-            services.Configure<QuartzOptions>(Configuration.GetSection("Quartz"));
-
-            //var quartzOptions = new QuartzOptions();
             
-            //services.AddSingleton(quartzOptions);
-            //
             var connectionString = Configuration.GetConnectionString("SchedulerDb");
 
 
             services.AddQuartz(q =>
             {
-                // we could leave DI configuration intact and then jobs need to have public no-arg constructor
-                // the MS DI is expected to produce transient job instances
-
-                // q.UseMicrosoftDependencyInjectionScopedJobFactory(options =>
-                // {
-                //     // if we don't have the job in DI, allow fallback to configure via default constructor
-                //     options.AllowDefaultConstructor = true;
-                //
-                //     // set to true if you want to inject scoped services like Entity Framework's DbContext
-                //     options.CreateScope = false;
-                // });
-
-                // these are the defaults
-                q.UseSimpleTypeLoader();
-
+                q.SchedulerId = "a";
                 q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = schedulerOptions.MaxConcurrency; });
-
-                // example of persistent job store using JSON serializer as an example
+                
+                q.UseMicrosoftDependencyInjectionJobFactory(options =>
+                {
+                    options.CreateScope = false;
+                });
 
                 q.UsePersistentStore(s =>
                 {
@@ -109,18 +96,15 @@ namespace SW.Scheduler.Web
                 });
             });
             
-            // services.AddQuartzServer(options =>
-            // {
-            //     
-            //     // when shutting down we want jobs to complete gracefully
-            //     options.WaitForJobsToComplete = true;
-            // });
-            //
+            services.AddQuartzServer(options =>
+            {
+                
+                // when shutting down we want jobs to complete gracefully
+                options.WaitForJobsToComplete = true;
+            });
             
-            services.AddHostedService<QuartzHostedService>();
-
-            services.AddSingleton<IJobFactory, SingletonJobFactory>();
-            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            
+            
             
             var identity = new GenericIdentity("scheduler");
             var principal = new ClaimsPrincipal(identity);
@@ -132,6 +116,7 @@ namespace SW.Scheduler.Web
             services.AddBusPublish();
             services.AddBusConsume();
 
+            
 
         }
 
@@ -146,17 +131,20 @@ namespace SW.Scheduler.Web
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello World!"); });
-            });
-            
+            var schedulerOptions = app.ApplicationServices.GetRequiredService<SchedulerOptions>();
             
             app.UseCrystalQuartz(
-                () => StdSchedulerFactory.GetDefaultScheduler().Result,
+                () =>
+                {
+                    var schedulerFactory = app.ApplicationServices.GetRequiredService<ISchedulerFactory>();
+                    return schedulerFactory.GetScheduler().Result;
+                },
                 new CrystalQuartzOptions
                 {
-                    Path = "/scheduler"
+                    Path = schedulerOptions.Path,
+                    TimelineSpan = TimeSpan.FromMinutes(schedulerOptions.TimelineSpanInMinutes),
+                    CustomCssUrl = schedulerOptions.CustomCssUrl,
+                    LazyInit = schedulerOptions.LazyInit
                 });
         }
     }

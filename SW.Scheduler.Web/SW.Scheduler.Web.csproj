@@ -6,7 +6,8 @@
 
     <ItemGroup>
       <PackageReference Include="CrystalQuartz.AspNetCore" Version="6.8.1" />
-      <PackageReference Include="Quartz" Version="3.2.4" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.2" />
+      
       <PackageReference Include="Quartz.AspNetCore" Version="3.2.4" />
       <PackageReference Include="Quartz.Serialization.Json" Version="3.2.4" />
       <PackageReference Include="SimplyWorks.Bus" Version="3.0.15" />
