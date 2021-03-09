@@ -18,5 +18,6 @@ namespace SW.Scheduler.Web
         public bool LazyInit { get; set; }
 
         public int TimelineSpanInMinutes { get; set; } = 60;
+        public string AdminCredentials { get; set; }= "admin:1234512345";
     }
 }

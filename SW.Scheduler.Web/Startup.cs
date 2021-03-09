@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 using CrystalQuartz.Application;
 using CrystalQuartz.AspNetCore;
 using CrystalQuartz.Core.SchedulerProviders;
@@ -26,32 +27,27 @@ namespace SW.Scheduler.Web
 {
     public class Startup
     {
-
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
-        
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });
-            
-            
+            services.Configure<KestrelServerOptions>(options => { options.AllowSynchronousIO = true; });
+
+
             services.AddSingleton<SchedulePublisher>();
             var schedulerOptions = new SchedulerOptions();
             Configuration.GetSection(SchedulerOptions.ConfigurationSection).Bind(schedulerOptions);
             services.AddSingleton(schedulerOptions);
 
-            
+
             var connectionString = Configuration.GetConnectionString("SchedulerDb");
 
 
@@ -59,17 +55,14 @@ namespace SW.Scheduler.Web
             {
                 q.SchedulerId = "a";
                 q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = schedulerOptions.MaxConcurrency; });
-                
-                q.UseMicrosoftDependencyInjectionJobFactory(options =>
-                {
-                    options.CreateScope = false;
-                });
+
+                q.UseMicrosoftDependencyInjectionJobFactory(options => { options.CreateScope = false; });
 
                 q.UsePersistentStore(s =>
                 {
                     s.UseProperties = true;
                     s.RetryInterval = TimeSpan.FromSeconds(15);
-                    
+
                     switch (schedulerOptions.DatabaseType)
                     {
                         case SchedulerOptions.DatabaseTypeSqlite:
@@ -79,11 +72,7 @@ namespace SW.Scheduler.Web
                             s.UseSqlServer(sqlServer => { sqlServer.ConnectionString = connectionString; });
                             break;
                         case SchedulerOptions.DatabaseTypePgSql:
-                            s.UsePostgres(postgres =>
-                            {
-                                postgres.ConnectionString = connectionString;
-                                
-                            });
+                            s.UsePostgres(postgres => { postgres.ConnectionString = connectionString; });
                             break;
                         case SchedulerOptions.DatabaseTypeMySql:
                             s.UseMySql(mysql => { mysql.ConnectionString = connectionString; });
@@ -95,17 +84,14 @@ namespace SW.Scheduler.Web
                     s.UseJsonSerializer();
                 });
             });
-            
+
             services.AddQuartzServer(options =>
             {
-                
                 // when shutting down we want jobs to complete gracefully
                 options.WaitForJobsToComplete = true;
             });
-            
-            
-            
-            
+
+
             var identity = new GenericIdentity("scheduler");
             var principal = new ClaimsPrincipal(identity);
             var requestContext = new RequestContext();
@@ -115,12 +101,9 @@ namespace SW.Scheduler.Web
             services.AddBus();
             services.AddBusPublish();
             services.AddBusConsume();
-
-            
-
         }
 
-        
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -132,7 +115,8 @@ namespace SW.Scheduler.Web
             app.UseRouting();
 
             var schedulerOptions = app.ApplicationServices.GetRequiredService<SchedulerOptions>();
-            
+            app.UseAuthentication(schedulerOptions);
+
             app.UseCrystalQuartz(
                 () =>
                 {

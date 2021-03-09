@@ -56,10 +56,7 @@ namespace SW.Scheduler.Web
                 await Add(request);
                 return;
             }
-            
             var oldKey = new TriggerKey(oldJob.JobDataMap.GetString("trigger-key"), request.MessageTypeName);
-            
-            
             var job = BuildJob(request);
             
             if (oldJob.JobDataMap["cron"].ToString() != request.Schedule)
@@ -79,20 +76,17 @@ namespace SW.Scheduler.Web
             {
                 job.JobDataMap.Put("trigger-key" , oldKey.Name);
             }
-            
             await scheduler.AddJob(job, true);
         }
 
         private async Task Delete(ScheduleMessage message)
         {
             var scheduler = await factory.GetScheduler();
-            
             var oldJob = await scheduler.GetJobDetail(new JobKey(message.Id, message.MessageTypeName));
-            if (oldJob == null) 
+            if (oldJob == null)
                 return;
-            var key = new TriggerKey(oldJob.JobDataMap.GetString("trigger-key"), message.MessageTypeName);
             
-            await scheduler.UnscheduleJob(key);
+            await scheduler.DeleteJob(oldJob.Key);
         }
     }
 }
