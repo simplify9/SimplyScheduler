@@ -78,7 +78,11 @@ namespace SW.Scheduler.Web
             else
             {
                 job.JobDataMap.Put("trigger-key" , oldKey.Name);
+                
+                
             }
+            
+            
             
             await scheduler.AddJob(job, true);
         }
@@ -88,11 +92,11 @@ namespace SW.Scheduler.Web
             var scheduler = await factory.GetScheduler();
             
             var oldJob = await scheduler.GetJobDetail(new JobKey(message.Id, message.MessageTypeName));
-            if (oldJob == null) 
+            if (oldJob == null)
                 return;
-            var key = new TriggerKey(oldJob.JobDataMap.GetString("trigger-key"), message.MessageTypeName);
             
-            await scheduler.UnscheduleJob(key);
+            await scheduler.DeleteJob(oldJob.Key);
+            
         }
     }
 }
