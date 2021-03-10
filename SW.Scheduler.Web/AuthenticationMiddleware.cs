@@ -16,12 +16,14 @@ namespace SW.Scheduler.Web
             SchedulerOptions schedulerOptions)
         {
             
+            
             applicationBuilder.Use(async (context, next) =>
             {
+                
                 var request = context.Request;
                 var header = request.Headers["Authorization"];
 
-                if (!String.IsNullOrWhiteSpace(header))
+                if (!string.IsNullOrWhiteSpace(header))
                 {
                     var authHeader = System.Net.Http.Headers.AuthenticationHeaderValue.Parse(header);
 
