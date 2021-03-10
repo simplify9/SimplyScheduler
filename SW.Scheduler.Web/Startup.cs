@@ -82,6 +82,7 @@ namespace SW.Scheduler.Web
                     }
 
                     s.UseJsonSerializer();
+                    
                 });
             });
 
@@ -89,6 +90,7 @@ namespace SW.Scheduler.Web
             {
                 // when shutting down we want jobs to complete gracefully
                 options.WaitForJobsToComplete = true;
+                
             });
 
 
@@ -101,6 +103,8 @@ namespace SW.Scheduler.Web
             services.AddBus();
             services.AddBusPublish();
             services.AddBusConsume();
+            services.AddHealthChecks();
+
         }
 
 
@@ -111,9 +115,15 @@ namespace SW.Scheduler.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health");
+            });
+            
+            
             var schedulerOptions = app.ApplicationServices.GetRequiredService<SchedulerOptions>();
             app.UseAuthentication(schedulerOptions);
 
