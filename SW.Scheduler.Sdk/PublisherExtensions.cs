@@ -2,8 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SW.PrimitiveTypes;
+using SW.Scheduler.Model;
 
-namespace SW.Scheduler.Model
+namespace SW.Scheduler.Sdk
 {
     public static class PublisherExtensions
     {
